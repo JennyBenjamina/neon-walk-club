@@ -4,7 +4,6 @@ import Skyline from '../components/Skyline.jsx'
 import SirkleCalendar from '../components/SirkleCalendar.jsx'
 import { useSettings } from '../lib/settings.jsx'
 import { useGallery, useRoutes } from '../lib/content.js'
-import { photoUrl } from '../lib/supabase.js'
 import { pathMiles } from '../lib/geo.js'
 
 export default function Home() {
@@ -116,8 +115,8 @@ export default function Home() {
           </div>
           <div className="photo-mosaic">
             {(photos.length ? photos.slice(0, 4) : [0, 1, 2, 3]).map((p, i) =>
-              p.storage_path ? (
-                <img key={p.id} src={photoUrl(p.storage_path)} alt={p.caption || 'Neon Walk Club walk'} loading="lazy" />
+              p.url ? (
+                <img key={p.id} src={p.url} alt={p.caption || 'Neon Walk Club walk'} loading="lazy" />
               ) : (
                 <div key={i} className={`photo-ph ph-${i}`} aria-hidden="true" />
               ),

@@ -1,0 +1,79 @@
+rules_version = '2';
+
+// Neon Walk Club: Firestore security rules
+// Public visitors can read published content and submit forms.
+// Only organizers (users with a document in /admins/{uid}) can read submissions or change content.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function validEmail(e) {
+      return e is string && e.size() <= 254 && e.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$');
+    }
+
+    function optionalString(v, max) {
+      return v == null || (v is string && v.size() <= max);
+    }
+
+    // Organizer list. Managed in the Firebase console only.
+    match /admins/{uid} {
+      allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      allow write: if false;
+    }
+
+    // Site settings (Sirkle links, contact email, stats): config/site
+    match /config/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /routes/{id} {
+      allow read: if resource.data.is_published == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /gallery_photos/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /spotlights/{id} {
+      allow read: if resource.data.is_published == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /partners/{id} {
+      allow read: if resource.data.is_active == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Newsletter: document ID is the email address, so each address can sign up once.
+    match /newsletter_subscribers/{email} {
+      allow create: if validEmail(request.resource.data.email)
+        && request.resource.data.email == email
+        && request.resource.data.keys().hasOnly(['email', 'source', 'created_at'])
+        && optionalString(request.resource.data.source, 40)
+        && request.resource.data.created_at == request.time;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Contact, partner, spotlight-nomination and merch-interest submissions.
+    match /messages/{id} {
+      allow create: if validEmail(request.resource.data.email)
+        && request.resource.data.kind in ['contact', 'partner', 'spotlight', 'merch']
+        && request.resource.data.keys().hasOnly(['kind', 'name', 'email', 'body', 'meta', 'is_read', 'created_at'])
+        && optionalString(request.resource.data.name, 120)
+        && optionalString(request.resource.data.body, 4000)
+        && request.resource.data.meta is map
+        && request.resource.data.meta.size() <= 5
+        && request.resource.data.is_read == false
+        && request.resource.data.created_at == request.time;
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}

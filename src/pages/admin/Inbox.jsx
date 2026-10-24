@@ -1,32 +1,30 @@
 import { useState } from 'react'
-import { supabase } from '../../lib/supabase.js'
-import { useQuery } from '../../lib/useQuery.js'
+import { collection, deleteDoc, doc, getDocs, limit, orderBy, query, updateDoc } from 'firebase/firestore/lite'
+import { db } from '../../lib/firebase.js'
+import { useQuery, rows, toDate } from '../../lib/useQuery.js'
 
 const KINDS = { all: 'All', contact: 'Contact', partner: 'Partners', spotlight: 'Nominations', merch: 'Merch interest' }
 
 export default function Inbox() {
   const [kind, setKind] = useState('all')
-  const { data, loading, reload } = useQuery(
-    `inbox-${kind}`,
-    (sb) => {
-      let q = sb.from('messages').select('*').order('created_at', { ascending: false }).limit(500)
-      if (kind !== 'all') q = q.eq('kind', kind)
-      return q
-    },
+  const { data: all, loading, reload } = useQuery(
+    'inbox',
+    async (db) => rows(await getDocs(query(collection(db, 'messages'), orderBy('created_at', 'desc'), limit(500)))),
     [],
   )
+  const data = kind === 'all' ? all : all.filter((m) => m.kind === kind)
 
   async function toggleRead(m) {
-    await supabase.from('messages').update({ is_read: !m.is_read }).eq('id', m.id)
+    await updateDoc(doc(db, 'messages', m.id), { is_read: !m.is_read })
     reload()
   }
   async function remove(m) {
     if (!window.confirm('Delete this message?')) return
-    await supabase.from('messages').delete().eq('id', m.id)
+    await deleteDoc(doc(db, 'messages', m.id))
     reload()
   }
 
-  const merch = data.filter((m) => m.kind === 'merch')
+  const merch = all.filter((m) => m.kind === 'merch')
   const tally = merch.reduce((acc, m) => {
     const k = `${m.meta?.item || 'Any item'} · ${m.meta?.size || 'no size'}`
     acc[k] = (acc[k] || 0) + 1
@@ -59,7 +57,7 @@ export default function Inbox() {
               <span className="tag">{KINDS[m.kind] || m.kind}</span>
               <strong>{m.name || 'No name'}</strong>
               <a href={`mailto:${m.email}`}>{m.email}</a>
-              <time className="muted small">{new Date(m.created_at).toLocaleString()}</time>
+              <time className="muted small">{toDate(m.created_at)?.toLocaleString()}</time>
             </header>
             {m.meta && Object.values(m.meta).some(Boolean) && (
               <dl className="meta">

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
@@ -10,8 +10,10 @@ import Visitors from './pages/Visitors.jsx'
 import Community from './pages/Community.jsx'
 import Perks from './pages/Perks.jsx'
 import Faq from './pages/Faq.jsx'
-import Admin from './pages/admin/Admin.jsx'
 import NotFound from './pages/NotFound.jsx'
+
+// Organizer tools (and Firebase Auth/Storage) only load when someone opens /admin.
+const Admin = lazy(() => import('./pages/admin/Admin.jsx'))
 
 function ScrollManager() {
   const { pathname, hash } = useLocation()
@@ -44,7 +46,14 @@ export default function App() {
           <Route path="/community" element={<Community />} />
           <Route path="/perks" element={<Perks />} />
           <Route path="/faq" element={<Faq />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route
+            path="/admin"
+            element={
+              <Suspense fallback={<section className="section"><div className="container muted">Loading…</div></section>}>
+                <Admin />
+              </Suspense>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

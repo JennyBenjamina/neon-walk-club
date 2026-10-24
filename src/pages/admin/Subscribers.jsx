@@ -1,16 +1,17 @@
-import { supabase } from '../../lib/supabase.js'
-import { useQuery } from '../../lib/useQuery.js'
+import { collection, deleteDoc, doc, getDocs, orderBy, query } from 'firebase/firestore/lite'
+import { db } from '../../lib/firebase.js'
+import { useQuery, rows, toDate } from '../../lib/useQuery.js'
 
 export default function Subscribers() {
   const { data, loading, reload } = useQuery(
     'subscribers',
-    (sb) => sb.from('newsletter_subscribers').select('*').order('created_at', { ascending: false }),
+    async (db) => rows(await getDocs(query(collection(db, 'newsletter_subscribers'), orderBy('created_at', 'desc')))),
     [],
   )
 
   function exportCsv() {
-    const rows = [['email', 'source', 'signed_up'], ...data.map((s) => [s.email, s.source || '', s.created_at])]
-    const csv = rows.map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n')
+    const out = [['email', 'source', 'signed_up'], ...data.map((s) => [s.email, s.source || '', toDate(s.created_at)?.toISOString() || ''])]
+    const csv = out.map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n')
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }))
     const a = Object.assign(document.createElement('a'), { href: url, download: 'neon-walk-club-subscribers.csv' })
     a.click()
@@ -19,7 +20,7 @@ export default function Subscribers() {
 
   async function remove(s) {
     if (!window.confirm(`Remove ${s.email}?`)) return
-    await supabase.from('newsletter_subscribers').delete().eq('id', s.id)
+    await deleteDoc(doc(db, 'newsletter_subscribers', s.id))
     reload()
   }
 
@@ -38,7 +39,7 @@ export default function Subscribers() {
               <tr key={s.id}>
                 <td>{s.email}</td>
                 <td className="muted">{s.source}</td>
-                <td className="muted">{new Date(s.created_at).toLocaleDateString()}</td>
+                <td className="muted">{toDate(s.created_at)?.toLocaleDateString()}</td>
                 <td><button className="btn btn-danger btn-sm" onClick={() => remove(s)}>Remove</button></td>
               </tr>
             ))}

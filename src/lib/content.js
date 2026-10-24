@@ -1,30 +1,40 @@
-import { useQuery } from './useQuery.js'
+import { collection, getDocs, limit as qLimit, orderBy, query, where } from 'firebase/firestore/lite'
+import { useQuery, rows } from './useQuery.js'
+import { pathFromFirestore } from './firebase.js'
 import { FALLBACK_ROUTES } from '../data/fallback.js'
+
+const bySort = (a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0)
+const newestFirst = (a, b) => (b.created_at?.seconds ?? 0) - (a.created_at?.seconds ?? 0)
 
 export const useRoutes = () =>
   useQuery(
     'routes',
-    (sb) => sb.from('routes').select('*').eq('is_published', true).order('sort_order'),
+    async (db) => {
+      const list = rows(await getDocs(query(collection(db, 'routes'), where('is_published', '==', true))))
+      if (!list.length) return FALLBACK_ROUTES
+      return list.sort(bySort).map((r) => ({ ...r, path: pathFromFirestore(r.path) }))
+    },
     FALLBACK_ROUTES,
   )
 
-export const useGallery = (limit = 60) =>
+export const useGallery = (max = 60) =>
   useQuery(
-    `gallery-${limit}`,
-    (sb) => sb.from('gallery_photos').select('*').order('sort_order').order('created_at', { ascending: false }).limit(limit),
+    `gallery-${max}`,
+    async (db) => rows(await getDocs(query(collection(db, 'gallery_photos'), orderBy('created_at', 'desc'), qLimit(max)))),
     [],
   )
 
 export const useSpotlights = () =>
   useQuery(
     'spotlights',
-    (sb) => sb.from('spotlights').select('*').eq('is_published', true).order('created_at', { ascending: false }),
+    async (db) =>
+      rows(await getDocs(query(collection(db, 'spotlights'), where('is_published', '==', true)))).sort(newestFirst),
     [],
   )
 
 export const usePartners = () =>
   useQuery(
     'partners',
-    (sb) => sb.from('partners').select('*').eq('is_active', true).order('sort_order'),
+    async (db) => rows(await getDocs(query(collection(db, 'partners'), where('is_active', '==', true)))).sort(bySort),
     [],
   )

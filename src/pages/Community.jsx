@@ -3,7 +3,6 @@ import PageHeader from '../components/PageHeader.jsx'
 import { MessageForm } from '../components/Forms.jsx'
 import { MILESTONES } from '../data/fallback.js'
 import { useGallery, useSpotlights } from '../lib/content.js'
-import { photoUrl } from '../lib/supabase.js'
 import { WalkerMark } from '../components/Logo.jsx'
 
 export default function Community() {
@@ -32,7 +31,7 @@ export default function Community() {
             <div className="gallery">
               {photos.map((p) => (
                 <button key={p.id} className="gallery-item" onClick={() => setLightbox(p)}>
-                  <img src={photoUrl(p.storage_path)} alt={p.caption || 'Neon Walk Club walk photo'} loading="lazy" />
+                  <img src={p.url} alt={p.caption || 'Neon Walk Club walk photo'} loading="lazy" />
                   {p.caption && <span className="gallery-cap">{p.caption}</span>}
                 </button>
               ))}
@@ -44,7 +43,7 @@ export default function Community() {
       {lightbox && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label="Photo" onClick={() => setLightbox(null)}>
           <figure onClick={(e) => e.stopPropagation()}>
-            <img src={photoUrl(lightbox.storage_path)} alt={lightbox.caption || 'Walk photo'} />
+            <img src={lightbox.url} alt={lightbox.caption || 'Walk photo'} />
             {lightbox.caption && <figcaption>{lightbox.caption}</figcaption>}
             <button className="btn btn-ghost btn-sm" onClick={() => setLightbox(null)}>Close</button>
           </figure>
@@ -58,8 +57,8 @@ export default function Community() {
           <div className="grid grid-3">
             {spotlights.map((s) => (
               <article className="card spotlight" key={s.id}>
-                {s.photo_path ? (
-                  <img className="avatar" src={photoUrl(s.photo_path)} alt={s.name} />
+                {s.photo_url ? (
+                  <img className="avatar" src={s.photo_url} alt={s.name} />
                 ) : (
                   <div className="avatar avatar-ph"><WalkerMark size={44} /></div>
                 )}

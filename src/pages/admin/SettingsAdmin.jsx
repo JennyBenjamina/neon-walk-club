@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { supabase } from '../../lib/supabase.js'
-import { useSettings, SETTING_LABELS } from '../../lib/settings.jsx'
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore/lite'
+import { db } from '../../lib/firebase.js'
+import { useSettings, SETTING_LABELS, SETTINGS_DOC } from '../../lib/settings.jsx'
 
 export default function SettingsAdmin() {
   const { settings, reload } = useSettings()
@@ -9,10 +10,14 @@ export default function SettingsAdmin() {
 
   async function save(e) {
     e.preventDefault()
-    const rows = Object.keys(SETTING_LABELS).map((key) => ({ key, value: (values[key] || '').trim(), updated_at: new Date().toISOString() }))
-    const { error } = await supabase.from('site_settings').upsert(rows)
-    setMsg(error ? error.message : 'Saved! The site uses the new values right away.')
-    reload()
+    const data = Object.fromEntries(Object.keys(SETTING_LABELS).map((k) => [k, (values[k] || '').trim()]))
+    try {
+      await setDoc(doc(db, ...SETTINGS_DOC), { ...data, updated_at: serverTimestamp() }, { merge: true })
+      setMsg('Saved! The site uses the new values right away.')
+      reload()
+    } catch (err) {
+      setMsg(err.message)
+    }
   }
 
   return (

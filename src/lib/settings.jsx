@@ -1,4 +1,5 @@
 import { createContext, useContext, useMemo } from 'react'
+import { doc, getDoc } from 'firebase/firestore/lite'
 import { useQuery } from './useQuery.js'
 
 export const DEFAULT_SETTINGS = {
@@ -19,13 +20,23 @@ export const SETTING_LABELS = {
   walks_per_week: 'Walks per week (e.g. 5–6)',
 }
 
+// All settings live in one Firestore document: config/site
+export const SETTINGS_DOC = ['config', 'site']
+
 const SettingsContext = createContext({ settings: DEFAULT_SETTINGS, reload: () => {} })
 
 export function SettingsProvider({ children }) {
-  const { data, reload } = useQuery('site_settings', (sb) => sb.from('site_settings').select('key,value'), [])
+  const { data, reload } = useQuery(
+    'settings',
+    async (db) => {
+      const snap = await getDoc(doc(db, ...SETTINGS_DOC))
+      return snap.exists() ? snap.data() : {}
+    },
+    {},
+  )
   const settings = useMemo(() => {
     const merged = { ...DEFAULT_SETTINGS }
-    for (const row of data || []) if (row.value) merged[row.key] = row.value
+    for (const [k, v] of Object.entries(data || {})) if (typeof v === 'string' && v) merged[k] = v
     return merged
   }, [data])
   return <SettingsContext.Provider value={{ settings, reload }}>{children}</SettingsContext.Provider>

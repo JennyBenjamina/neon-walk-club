@@ -1,11 +1,7 @@
 import { useState } from 'react'
-import { supabase } from '../lib/supabase.js'
+import { addDoc, collection, doc, serverTimestamp, setDoc } from 'firebase/firestore/lite'
+import { db } from '../lib/firebase.js'
 import { useSettings } from '../lib/settings.jsx'
-
-function useSubmit() {
-  const [status, setStatus] = useState({ state: 'idle', message: '' })
-  return [status, setStatus]
-}
 
 function NotConnected({ email }) {
   return (
@@ -28,19 +24,27 @@ export function NewsletterForm({ source = 'site', compact = false }) {
   const { settings } = useSettings()
   const [email, setEmail] = useState('')
   const [hp, setHp] = useState('')
-  const [status, setStatus] = useSubmit()
+  const [status, setStatus] = useState({ state: 'idle', message: '' })
 
   async function onSubmit(e) {
     e.preventDefault()
     if (hp) return // bot trap
-    if (!supabase) return setStatus({ state: 'error', message: 'Newsletter sign-ups open soon.' })
+    if (!db) return setStatus({ state: 'error', message: 'Newsletter sign-ups open soon.' })
     setStatus({ state: 'sending' })
-    const { error } = await supabase.from('newsletter_subscribers').insert({ email: email.trim().toLowerCase(), source })
-    if (error && error.code !== '23505') {
-      setStatus({ state: 'error', message: 'Something went wrong. Please try again.' })
-    } else {
-      setStatus({ state: 'ok', message: error ? "You're already on the list. See you out there!" : "You're in! Watch your inbox." })
+    const clean = email.trim().toLowerCase()
+    try {
+      // The email is the document ID, so each address can only sign up once.
+      await setDoc(doc(db, 'newsletter_subscribers', clean), { email: clean, source, created_at: serverTimestamp() })
+      setStatus({ state: 'ok', message: "You're in! Watch your inbox." })
       setEmail('')
+    } catch (err) {
+      // Security rules reject a second sign-up for the same address.
+      if (err?.code === 'permission-denied') {
+        setStatus({ state: 'ok', message: "You're on the list. See you out there!" })
+        setEmail('')
+      } else {
+        setStatus({ state: 'error', message: 'Something went wrong. Please try again.' })
+      }
     }
   }
 
@@ -51,6 +55,7 @@ export function NewsletterForm({ source = 'site', compact = false }) {
         id={`nl-${source}`}
         type="email"
         required
+        maxLength={254}
         placeholder="you@email.com"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -59,41 +64,44 @@ export function NewsletterForm({ source = 'site', compact = false }) {
       <button className="btn btn-ghost" disabled={status.state === 'sending'}>
         {status.state === 'sending' ? 'Adding…' : 'Subscribe'}
       </button>
-      {!supabase && compact ? null : <Status status={status} />}
-      {!supabase && !compact && <NotConnected email={settings.contact_email} />}
+      {!db && compact ? null : <Status status={status} />}
+      {!db && !compact && <NotConnected email={settings.contact_email} />}
     </form>
   )
 }
 
 /**
- * Generic message form that writes to the `messages` table.
+ * Generic message form that writes to the `messages` collection.
  * kind: 'contact' | 'partner' | 'spotlight' | 'merch'
  */
 export function MessageForm({ kind, fields = [], bodyLabel = 'Message', bodyPlaceholder = '', submitLabel = 'Send', successMessage = 'Thanks! We got your message.' }) {
   const { settings } = useSettings()
   const [values, setValues] = useState({ name: '', email: '', body: '' })
   const [hp, setHp] = useState('')
-  const [status, setStatus] = useSubmit()
+  const [status, setStatus] = useState({ state: 'idle', message: '' })
   const set = (k) => (e) => setValues((v) => ({ ...v, [k]: e.target.value }))
 
   async function onSubmit(e) {
     e.preventDefault()
     if (hp) return
-    if (!supabase) return setStatus({ state: 'error', message: 'Online forms open soon.' })
+    if (!db) return setStatus({ state: 'error', message: 'Online forms open soon.' })
     setStatus({ state: 'sending' })
     const meta = {}
-    for (const f of fields) meta[f.name] = values[f.name] || null
-    const { error } = await supabase.from('messages').insert({
-      kind,
-      name: values.name.trim() || null,
-      email: values.email.trim(),
-      body: values.body.trim() || null,
-      meta,
-    })
-    if (error) setStatus({ state: 'error', message: 'Something went wrong. Please try again or email us.' })
-    else {
+    for (const f of fields) meta[f.name] = (values[f.name] || '').slice(0, 200) || null
+    try {
+      await addDoc(collection(db, 'messages'), {
+        kind,
+        name: values.name.trim().slice(0, 120) || null,
+        email: values.email.trim().toLowerCase(),
+        body: values.body.trim() || null,
+        meta,
+        is_read: false,
+        created_at: serverTimestamp(),
+      })
       setStatus({ state: 'ok', message: successMessage })
       setValues({ name: '', email: '', body: '' })
+    } catch {
+      setStatus({ state: 'error', message: 'Something went wrong. Please try again or email us.' })
     }
   }
 
@@ -102,11 +110,11 @@ export function MessageForm({ kind, fields = [], bodyLabel = 'Message', bodyPlac
       <div className="form-row">
         <label>
           Name
-          <input value={values.name} onChange={set('name')} autoComplete="name" />
+          <input value={values.name} onChange={set('name')} autoComplete="name" maxLength={120} />
         </label>
         <label>
           Email
-          <input type="email" required value={values.email} onChange={set('email')} autoComplete="email" />
+          <input type="email" required value={values.email} onChange={set('email')} autoComplete="email" maxLength={254} />
         </label>
       </div>
       {fields.map((f) => (
@@ -120,7 +128,7 @@ export function MessageForm({ kind, fields = [], bodyLabel = 'Message', bodyPlac
               ))}
             </select>
           ) : (
-            <input value={values[f.name] || ''} onChange={set(f.name)} placeholder={f.placeholder} />
+            <input value={values[f.name] || ''} onChange={set(f.name)} placeholder={f.placeholder} maxLength={200} />
           )}
         </label>
       ))}
@@ -133,7 +141,7 @@ export function MessageForm({ kind, fields = [], bodyLabel = 'Message', bodyPlac
         {status.state === 'sending' ? 'Sending…' : submitLabel}
       </button>
       <Status status={status} />
-      {!supabase && <NotConnected email={settings.contact_email} />}
+      {!db && <NotConnected email={settings.contact_email} />}
     </form>
   )
 }

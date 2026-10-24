@@ -1,36 +1,46 @@
 import { useState } from 'react'
-import { supabase } from '../../lib/supabase.js'
-import { useQuery } from '../../lib/useQuery.js'
+import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp, updateDoc } from 'firebase/firestore/lite'
+import { db } from '../../lib/firebase.js'
+import { useQuery, rows } from '../../lib/useQuery.js'
 
 const EMPTY = { name: '', perk: '', address: '', url: '' }
 
 export default function PartnersAdmin() {
-  const { data, reload } = useQuery('admin-partners', (sb) => sb.from('partners').select('*').order('sort_order').order('created_at'), [])
+  const { data, reload } = useQuery(
+    'admin-partners',
+    async (db) => rows(await getDocs(collection(db, 'partners'))).sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0)),
+    [],
+  )
   const [form, setForm] = useState(EMPTY)
   const [err, setErr] = useState('')
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
   async function add(e) {
     e.preventDefault()
-    const { error } = await supabase.from('partners').insert({
-      name: form.name,
-      perk: form.perk,
-      address: form.address || null,
-      url: form.url || null,
-      sort_order: data.length,
-    })
-    if (error) return setErr(error.message)
-    setErr('')
-    setForm(EMPTY)
-    reload()
+    try {
+      await addDoc(collection(db, 'partners'), {
+        name: form.name,
+        perk: form.perk,
+        address: form.address || null,
+        url: form.url || null,
+        is_active: true,
+        sort_order: data.length,
+        created_at: serverTimestamp(),
+      })
+      setErr('')
+      setForm(EMPTY)
+      reload()
+    } catch (e2) {
+      setErr(e2.message)
+    }
   }
   async function toggle(p) {
-    await supabase.from('partners').update({ is_active: !p.is_active }).eq('id', p.id)
+    await updateDoc(doc(db, 'partners', p.id), { is_active: !p.is_active })
     reload()
   }
   async function remove(p) {
     if (!window.confirm(`Delete ${p.name}?`)) return
-    await supabase.from('partners').delete().eq('id', p.id)
+    await deleteDoc(doc(db, 'partners', p.id))
     reload()
   }
 

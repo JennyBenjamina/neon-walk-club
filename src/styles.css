@@ -325,6 +325,7 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--c
 .table th { color: var(--muted); font-weight: 500; font-size: 0.85rem; }
 .admin-gallery .admin-photo { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
 .admin-photo img { aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px; width: 100%; }
+.uid { display: inline-block; word-break: break-all; font-size: 1rem; padding: 6px 10px; }
 .route-admin { border-left: 4px solid var(--c); }
 .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
 @media (max-width: 640px) { .table { font-size: 0.85rem; } .table td:nth-child(2), .table th:nth-child(2) { display: none; } }

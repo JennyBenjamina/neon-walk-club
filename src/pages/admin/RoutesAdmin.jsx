@@ -1,12 +1,39 @@
-import { supabase } from '../../lib/supabase.js'
-import { useQuery } from '../../lib/useQuery.js'
+import { useState } from 'react'
+import { collection, doc, getDocs, updateDoc, writeBatch } from 'firebase/firestore/lite'
+import { db, pathFromFirestore, pathToFirestore } from '../../lib/firebase.js'
+import { useQuery, rows } from '../../lib/useQuery.js'
 import { pathMiles } from '../../lib/geo.js'
+import { FALLBACK_ROUTES } from '../../data/fallback.js'
 
 export default function RoutesAdmin() {
-  const { data, reload } = useQuery('admin-routes', (sb) => sb.from('routes').select('*').order('sort_order'), [])
+  const { data, loading, reload } = useQuery(
+    'admin-routes',
+    async (db) =>
+      rows(await getDocs(collection(db, 'routes')))
+        .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+        .map((r) => ({ ...r, path: pathFromFirestore(r.path) })),
+    [],
+  )
+  const [busy, setBusy] = useState(false)
 
   async function save(r, patch) {
-    await supabase.from('routes').update(patch).eq('id', r.id)
+    await updateDoc(doc(db, 'routes', r.id), patch)
+    reload()
+  }
+
+  async function loadStarters() {
+    setBusy(true)
+    const batch = writeBatch(db)
+    FALLBACK_ROUTES.forEach((r, i) => {
+      batch.set(doc(db, 'routes', r.slug), {
+        ...r,
+        path: pathToFirestore(r.path),
+        sort_order: i + 1,
+        is_published: true,
+      })
+    })
+    await batch.commit()
+    setBusy(false)
     reload()
   }
 
@@ -14,9 +41,16 @@ export default function RoutesAdmin() {
     <div className="admin-panel">
       <p className="muted small">
         Edit names, descriptions and highlights here. To change the line drawn on the map, edit the route's{' '}
-        <code>path</code> in Supabase (Table Editor → routes). It's a list of [latitude, longitude] points.
+        <code>path</code> in the Firebase console (Firestore → routes). It's a list of points with <code>lat</code> and{' '}
+        <code>lng</code>.
       </p>
-      {data.length === 0 && <p className="muted">No routes in the database yet. Run supabase/seed.sql to add the starter routes.</p>}
+      {!loading && data.length === 0 && (
+        <div className="card">
+          <h3>No routes saved yet</h3>
+          <p className="muted">The site is showing the five built-in starter routes. Load them into Firestore so you can edit them here.</p>
+          <button className="btn btn-primary" onClick={loadStarters} disabled={busy}>{busy ? 'Loading…' : 'Load starter routes'}</button>
+        </div>
+      )}
       <div className="admin-list">
         {data.map((r) => (
           <article key={r.id} className="card form route-admin" style={{ '--c': r.color }}>
