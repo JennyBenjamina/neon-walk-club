@@ -8,12 +8,12 @@ export default function Faq() {
   const FAQS = [
     ['Is it really free?', 'Yes. Membership and every walk are free, and they always will be.'],
     ['Who can join?', 'Anyone: locals, visitors, every age and every fitness level. If you can walk the Strip, you belong here.'],
-    ['Do I need the Sirkle app?', 'Sirkle is how we post walks and take RSVPs, so you need it to see the live calendar and save your spot. The newsletter is a lighter way to keep up.'],
+    ['Do I need the Sirkl app?', 'Sirkl is how we post walks and take RSVPs, so you need it to see the live calendar and save your spot. The newsletter is a lighter way to keep up.'],
     ['How long are the walks?', <>Most cover between one and four miles depending on the route, at a relaxed, social pace. See the <Link to="/routes">route maps</Link> for distances.</>],
-    ['How often do you walk?', `${settings.walks_per_week} times a week, mornings and evenings. Check Sirkle for this week's schedule.`],
+    ['How often do you walk?', `${settings.walks_per_week} times a week, mornings and evenings. Check Sirkl for this week's schedule.`],
     ['Can I bring my kids?', 'Families are welcome. Children should be with a parent or guardian, who is responsible for them during the walk.'],
-    ['What if it is too hot or the weather is bad?', <>We move to cooler times in summer and may cancel during excessive-heat warnings or bad weather. Any change goes out in Sirkle. See our <Link to="/walks">heat schedule</Link>.</>],
-    ['Is it accessible?', <>Most routes are fully paved and use pedestrian bridges with elevators. Message the walk leader in Sirkle ahead of time and we'll help plan. <Link to="/first-walk">More details</Link>.</>],
+    ['What if it is too hot or the weather is bad?', <>We move to cooler times in summer and may cancel during excessive-heat warnings or bad weather. Any change goes out in Sirkl. See our <Link to="/walks">heat schedule</Link>.</>],
+    ['Is it accessible?', <>Most routes are fully paved and use pedestrian bridges with elevators. Message the walk leader in Sirkl ahead of time and we'll help plan. <Link to="/first-walk">More details</Link>.</>],
     ["I'm only visiting. Can I come?", <>Absolutely! Visitors are some of our favorite walkers. See the <Link to="/visiting-vegas">visitor guide</Link>.</>],
     ['How do I become a walk leader?', 'Come to a few walks, then tell the organizer you are interested. We love new leaders, especially for extra morning walks.'],
   ]

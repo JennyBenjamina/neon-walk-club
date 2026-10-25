@@ -24,7 +24,7 @@ export default function SettingsAdmin() {
     <form className="card form admin-panel" onSubmit={save}>
       <h3>Site settings</h3>
       <p className="muted small">
-        When Sirkle gives you an embed code, copy only the URL inside <code>src="…"</code> into the calendar field.
+        When Sirkl gives you an embed code, copy only the URL inside <code>src="…"</code> into the calendar field.
       </p>
       {Object.entries(SETTING_LABELS).map(([key, label]) => (
         <label key={key}>

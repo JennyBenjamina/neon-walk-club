@@ -5,7 +5,7 @@ const BRING = [
   ['👟', 'Comfortable shoes', 'Broken-in sneakers. The Strip is longer than it looks.'],
   ['💧', 'Water', 'A refillable bottle, year-round. In summer bring more than you think you need.'],
   ['🧢', 'Sun protection', 'Hat, sunglasses and sunscreen for daytime walks.'],
-  ['📱', 'A charged phone', 'For photos, for Sirkle updates, and to find the group if you are running late.'],
+  ['📱', 'A charged phone', 'For photos, for Sirkl updates, and to find the group if you are running late.'],
   ['🪪', 'ID + a little cash/card', 'Handy if we stop for a coffee or a snack afterwards.'],
   ['🧥', 'A light layer', 'Winter evenings in the desert get chilly once the sun goes down.'],
 ]
@@ -30,9 +30,9 @@ export default function FirstWalk() {
         <div className="container split">
           <div className="card">
             <p className="eyebrow">Step one</p>
-            <h2>Join us on Sirkle</h2>
+            <h2>Join us on Sirkl</h2>
             <ol className="check-list">
-              <li>Download the free <strong>Sirkle</strong> app from the App Store or Google Play.</li>
+              <li>Download the free <strong>Sirkl</strong> app from the App Store or Google Play.</li>
               <li>Search for <strong>Neon Walk Club</strong> and tap Join.</li>
               <li>Browse the calendar and RSVP to a walk that suits you.</li>
               <li>Turn on notifications so you see last-minute changes.</li>
@@ -43,10 +43,10 @@ export default function FirstWalk() {
             <p className="eyebrow">On the day</p>
             <h2>Finding the group</h2>
             <ul className="check-list">
-              <li>The exact meeting spot is in each Sirkle walk listing.</li>
+              <li>The exact meeting spot is in each Sirkl walk listing.</li>
               <li>Arrive 5–10 minutes early; we usually head off on time.</li>
               <li>Look for the walk leader and say hi. Tell them it's your first walk!</li>
-              <li>Running late? Comment on the walk in Sirkle and we'll tell you where we are.</li>
+              <li>Running late? Comment on the walk in Sirkl and we'll tell you where we are.</li>
             </ul>
           </div>
         </div>
@@ -83,7 +83,7 @@ export default function FirstWalk() {
             <h2>Strollers & mobility aids</h2>
             <p className="muted">
               The Strip's sidewalks are wide and most pedestrian bridges have elevators or escalators. Elevators are
-              sometimes out of service, so if you need step-free access, message the walk leader in Sirkle before the walk
+              sometimes out of service, so if you need step-free access, message the walk leader in Sirkl before the walk
               and we'll plan around it.
             </p>
           </div>

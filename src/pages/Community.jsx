@@ -83,7 +83,7 @@ export default function Community() {
           <p className="eyebrow">Milestones</p>
           <h2>Light up the leaderboard</h2>
           <p className="muted measure">
-            Every walk you RSVP to and attend in Sirkle counts. Hit a milestone and we'll celebrate you on a walk and on
+            Every walk you RSVP to and attend in Sirkl counts. Hit a milestone and we'll celebrate you on a walk and on
             this page.
           </p>
           <div className="milestones">

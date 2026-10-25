@@ -10,7 +10,7 @@ export default function Walks() {
   return (
     <>
       <PageHeader eyebrow="Walk calendar" title="Upcoming walks">
-        {settings.walks_per_week} walks every week. Times, meeting spots and routes are posted live in Sirkle. Tap any walk
+        {settings.walks_per_week} walks every week. Times, meeting spots and routes are posted live in Sirkl. Tap any walk
         to RSVP.
       </PageHeader>
 
@@ -44,7 +44,7 @@ export default function Walks() {
             <p className="muted">
               Las Vegas summers regularly climb past 105°F. From roughly June through September we shift to early-morning
               and later-evening walks, and we cancel or shorten walks during excessive-heat warnings. Any change is posted
-              in Sirkle first.
+              in Sirkl first.
             </p>
             <Link className="text-link" to="/first-walk#safety">Heat safety tips →</Link>
           </div>
@@ -52,7 +52,7 @@ export default function Walks() {
             <p className="eyebrow">How to RSVP</p>
             <h2>Save your spot</h2>
             <ol className="check-list">
-              <li>Open Neon Walk Club in the Sirkle app.</li>
+              <li>Open Neon Walk Club in the Sirkl app.</li>
               <li>Pick a walk on the calendar.</li>
               <li>Tap to RSVP so the leader knows to look for you.</li>
               <li>Can't make it after all? Un-RSVP so the headcount stays accurate.</li>

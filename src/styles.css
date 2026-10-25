@@ -153,7 +153,17 @@ code { background: var(--surface-2); padding: 0.1em 0.4em; border-radius: 6px; f
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); padding: 28px 0; gap: 16px; }
 .stat { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .stat strong { font-family: var(--display); font-weight: 400; font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.1; }
-.stat span { color: var(--muted); font-size: 0.9rem; }
+.stat > span { color: var(--muted); font-size: 0.9rem; }
+.count-up { position: relative; display: inline-block; font-variant-numeric: tabular-nums; }
+.count-up-final { visibility: hidden; }
+.count-up-live { position: absolute; inset: 0; text-align: center; white-space: nowrap; }
+/* Dim while counting, then the sign "switches on" with a quick neon flicker. */
+.count-up:not(.is-done) { opacity: 0.55; filter: saturate(0.6); }
+.count-up.is-done { animation: neon-on 0.7s ease-out; }
+@keyframes neon-on {
+  0% { opacity: 0.55; } 15% { opacity: 1; } 25% { opacity: 0.4; } 40% { opacity: 1; } 55% { opacity: 0.75; } 100% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .count-up.is-done { animation: none; } .count-up:not(.is-done) { opacity: 1; filter: none; } }
 @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } }
 
 .steps { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }

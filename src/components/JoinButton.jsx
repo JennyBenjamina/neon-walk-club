@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useSettings } from '../lib/settings.jsx'
 
-export default function JoinButton({ children = 'Join us on Sirkle', className = 'btn btn-primary' }) {
+export default function JoinButton({ children = 'Join us on Sirkl', className = 'btn btn-primary' }) {
   const { settings } = useSettings()
   if (settings.sirkle_join_url) {
     return (

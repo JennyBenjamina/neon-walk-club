@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import JoinButton from '../components/JoinButton.jsx'
+import CountUp from '../components/CountUp.jsx'
 import Skyline from '../components/Skyline.jsx'
 import SirkleCalendar from '../components/SirkleCalendar.jsx'
 import { useSettings } from '../lib/settings.jsx'
@@ -37,10 +38,10 @@ export default function Home() {
 
       <section className="stats-band">
         <div className="container stats">
-          <div className="stat"><strong className="neon-pink">{settings.member_count}+</strong><span>members</span></div>
-          <div className="stat"><strong className="neon-cyan">{settings.walks_per_week}</strong><span>walks a week</span></div>
-          <div className="stat"><strong className="neon-amber">$0</strong><span>forever free</span></div>
-          <div className="stat"><strong className="neon-violet">{routes.length}</strong><span>signature routes</span></div>
+          <div className="stat"><CountUp className="neon-pink" value={`${settings.member_count}+`} /><span>members</span></div>
+          <div className="stat"><CountUp className="neon-cyan" value={settings.walks_per_week} delay={150} /><span>walks a week</span></div>
+          <div className="stat"><CountUp className="neon-amber" value="$0" delay={300} /><span>forever free</span></div>
+          <div className="stat"><CountUp className="neon-violet" value={routes.length} delay={450} /><span>signature routes</span></div>
         </div>
       </section>
 
@@ -51,8 +52,8 @@ export default function Home() {
           <ol className="steps">
             <li className="card">
               <span className="step-num neon-pink">1</span>
-              <h3>Get Sirkle</h3>
-              <p className="muted">Download the free Sirkle app. It's where our calendar and RSVPs live.</p>
+              <h3>Get Sirkl</h3>
+              <p className="muted">Download the free Sirkl app. It's where our calendar and RSVPs live.</p>
             </li>
             <li className="card">
               <span className="step-num neon-cyan">2</span>

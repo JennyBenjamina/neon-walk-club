@@ -2,9 +2,9 @@ import { useSettings } from '../lib/settings.jsx'
 import JoinButton from './JoinButton.jsx'
 
 /**
- * Shows the live Sirkle calendar when an embed URL is set (in /admin -> Settings,
+ * Shows the live Sirkl calendar when an embed URL is set (in /admin -> Settings,
  * or VITE_SIRKLE_CALENDAR_EMBED_URL). There's no second calendar to keep updated:
- * Sirkle stays the single source of truth.
+ * Sirkl stays the single source of truth.
  */
 export default function SirkleCalendar({ height = 640 }) {
   const { settings } = useSettings()
@@ -13,10 +13,10 @@ export default function SirkleCalendar({ height = 640 }) {
   if (src) {
     return (
       <div className="calendar-embed card">
-        <iframe src={src} title="Neon Walk Club walk calendar on Sirkle" height={height} loading="lazy" />
+        <iframe src={src} title="Neon Walk Club walk calendar on Sirkl" height={height} loading="lazy" />
         <div className="calendar-foot">
-          <span className="muted small">Live from Sirkle. RSVP there to save your spot.</span>
-          <JoinButton className="btn btn-ghost btn-sm">Open in Sirkle</JoinButton>
+          <span className="muted small">Live from Sirkl. RSVP there to save your spot.</span>
+          <JoinButton className="btn btn-ghost btn-sm">Open in Sirkl</JoinButton>
         </div>
       </div>
     )
@@ -30,12 +30,12 @@ export default function SirkleCalendar({ height = 640 }) {
         ))}
       </div>
       <div>
-        <h3>Our live calendar lives on Sirkle</h3>
+        <h3>Our live calendar lives on Sirkl</h3>
         <p className="muted">
           We walk {settings.walks_per_week} times a week. Every walk, with its time, meeting spot and route, is posted
-          in the Sirkle app, where you can RSVP in one tap.
+          in the Sirkl app, where you can RSVP in one tap.
         </p>
-        <JoinButton>See upcoming walks on Sirkle</JoinButton>
+        <JoinButton>See upcoming walks on Sirkl</JoinButton>
       </div>
     </div>
   )

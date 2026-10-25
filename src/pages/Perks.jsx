@@ -20,7 +20,7 @@ export default function Perks() {
       <section className="section pt-0">
         <div className="container">
           <h2>Partner perks</h2>
-          <p className="muted measure">Show your Neon Walk Club membership in Sirkle at these partners to claim the perk.</p>
+          <p className="muted measure">Show your Neon Walk Club membership in Sirkl at these partners to claim the perk.</p>
           {partners.length ? (
             <div className="grid grid-3">
               {partners.map((p) => (

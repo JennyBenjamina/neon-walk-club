@@ -2,16 +2,16 @@
 
 React (Vite) frontend + Firebase backend (Firestore, Auth, Storage, Hosting) for **neonwalkclub.com**.
 
-Sirkle stays the source of truth for walks and RSVPs. The website embeds the Sirkle calendar instead of keeping a second one.
+Sirkl stays the source of truth for walks and RSVPs. The website embeds the Sirkl calendar instead of keeping a second one.
 
 ## What's in the site
 
 | Page | URL | What it does |
 |---|---|---|
 | Home | `/` | Hero, stats, how-it-works, live calendar, routes, visitor teaser |
-| Walks | `/walks` | Embedded Sirkle calendar, themed walks, summer heat schedule, how to RSVP |
+| Walks | `/walks` | Embedded Sirkl calendar, themed walks, summer heat schedule, how to RSVP |
 | Routes | `/routes` | Interactive map of club routes with distance and time |
-| First Walk | `/first-walk` | How to join on Sirkle, what to bring, pace, accessibility, **safety & conduct** |
+| First Walk | `/first-walk` | How to join on Sirkl, what to bring, pace, accessibility, **safety & conduct** |
 | Visiting Vegas | `/visiting-vegas` | Guide for tourists joining a single walk |
 | Community | `/community` | Photo gallery, member spotlights, milestones, nominate a walker |
 | Perks & Merch | `/perks` | Partner perks, become-a-partner form, merch interest form |
@@ -63,12 +63,12 @@ Then open the **Rules** tab, paste the contents of `storage.rules`, and click **
 2. You'll see "Not an organizer yet" and your **user ID**. Click **Copy user ID**.
 3. In the Firebase console, go to **Firestore Database → Start collection**. Use `admins` as the Collection ID, paste your user ID as the Document ID, and add a field `email` (string) with your email. Click **Save**.
 4. Refresh `/admin`. You're in.
-5. Open the **Routes** tab and click **Load starter routes**, then **Settings** to add your Sirkle links.
+5. Open the **Routes** tab and click **Load starter routes**, then **Settings** to add your Sirkl links.
 
 Add co-organizers the same way: they sign in once, send you their user ID, and you add a document for them in `admins`.
 
-## Add the Sirkle calendar
-When Sirkle gives you an embed code, it will look something like `<iframe src="https://…">`. Copy **only the URL inside `src="…"`** and paste it into **/admin → Settings → Sirkle calendar embed URL**. Put your Sirkle invite link in the same screen. Both take effect immediately, with no redeploy.
+## Add the Sirkl calendar
+When Sirkl gives you an embed code, it will look something like `<iframe src="https://…">`. Copy **only the URL inside `src="…"`** and paste it into **/admin → Settings → Sirkl calendar embed URL**. Put your Sirkl invite link in the same screen. Both take effect immediately, with no redeploy.
 
 ## Edit content
 - **Photos, spotlights, partners, route text, settings:** use `/admin`.
@@ -90,7 +90,7 @@ Your site will be live at `https://<project-id>.web.app`. To use your own domain
 ## Where data lives (Firestore)
 | Collection | What |
 |---|---|
-| `config/site` | Site settings (Sirkle links, contact email, stats) |
+| `config/site` | Site settings (Sirkl links, contact email, stats) |
 | `routes` | Route maps |
 | `gallery_photos` | Gallery photos (files in Storage `walks/`) |
 | `spotlights` | Member spotlights (photos in Storage `spotlights/`) |

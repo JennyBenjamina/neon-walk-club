@@ -14,7 +14,7 @@ export default function RoutesPage() {
   return (
     <>
       <PageHeader eyebrow="Route maps" title="Our routes" color="cyan">
-        Our regular routes, from the classic Center Strip loop to the full sign-to-Sahara challenge. Each walk in Sirkle
+        Our regular routes, from the classic Center Strip loop to the full sign-to-Sahara challenge. Each walk in Sirkl
         lists which route we're taking.
       </PageHeader>
 
