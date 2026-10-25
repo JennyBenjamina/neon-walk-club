@@ -5,6 +5,7 @@ import { useQuery } from './useQuery.js'
 export const DEFAULT_SETTINGS = {
   sirkle_join_url: import.meta.env.VITE_SIRKLE_JOIN_URL || 'https://www.sirkl.app/join',
   sirkle_calendar_embed_url: import.meta.env.VITE_SIRKLE_CALENDAR_EMBED_URL || '',
+  sirkl_group_code: '522684',
   contact_email: 'hello@neonwalkclub.com',
   instagram_url: '',
   member_count: '350',
@@ -13,6 +14,7 @@ export const DEFAULT_SETTINGS = {
 
 export const SETTING_LABELS = {
   sirkle_join_url: 'Sirkl invite / join link',
+  sirkl_group_code: 'Sirkl group code (members enter this in the app to join)',
   sirkle_calendar_embed_url: 'Sirkl calendar embed URL (the src="…" part of the embed code)',
   contact_email: 'Contact email shown on the site',
   instagram_url: 'Instagram URL (optional)',

@@ -1,5 +1,6 @@
 import PageHeader from '../components/PageHeader.jsx'
 import JoinButton from '../components/JoinButton.jsx'
+import GroupCode from '../components/GroupCode.jsx'
 
 const BRING = [
   ['👟', 'Comfortable shoes', 'Broken-in sneakers. The Strip is longer than it looks.'],
@@ -33,7 +34,10 @@ export default function FirstWalk() {
             <h2>Join us on Sirkl</h2>
             <ol className="check-list">
               <li>Download the free <strong>Sirkl</strong> app from the App Store or Google Play.</li>
-              <li>Search for <strong>Neon Walk Club</strong> and tap Join.</li>
+              <li>
+                In Sirkl, join a group by code and enter ours:
+                <GroupCode />
+              </li>
               <li>Browse the calendar and RSVP to a walk that suits you.</li>
               <li>Turn on notifications so you see last-minute changes.</li>
             </ol>

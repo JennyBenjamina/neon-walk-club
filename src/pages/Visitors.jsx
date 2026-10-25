@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import PageHeader from '../components/PageHeader.jsx'
 import JoinButton from '../components/JoinButton.jsx'
+import GroupCode from '../components/GroupCode.jsx'
 
 const TIPS = [
   ['Distances are deceiving', "Resorts are enormous. The one that looks next door can be a 20-minute walk. Our route maps show real distances."],
@@ -24,7 +25,7 @@ export default function Visitors() {
           <div className="card">
             <h2>Joining for a single walk</h2>
             <ol className="check-list">
-              <li>Join Neon Walk Club on Sirkl (it takes a minute).</li>
+              <li>Get Sirkl and join our group with code <GroupCode inline /> (it takes a minute).</li>
               <li>Pick a walk on a day you're in town and RSVP.</li>
               <li>Meet us at the posted spot. Tell the leader you're visiting!</li>
               <li>Leave the club in Sirkl when you head home, or stay for next time.</li>

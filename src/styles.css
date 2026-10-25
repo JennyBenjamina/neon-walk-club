@@ -339,3 +339,11 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--c
 .route-admin { border-left: 4px solid var(--c); }
 .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
 @media (max-width: 640px) { .table { font-size: 0.85rem; } .table td:nth-child(2), .table th:nth-child(2) { display: none; } }
+
+/* Sirkl group code */
+.group-code { display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 10px; padding: 8px 8px 8px 14px; border: 1px solid rgba(46, 230, 255, 0.45); border-radius: 14px; background: rgba(46, 230, 255, 0.06); box-shadow: 0 0 16px rgba(46, 230, 255, 0.15); }
+.group-code-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); font-weight: 700; }
+.group-code-value { font-family: var(--display); font-size: 1.7rem; letter-spacing: 0.18em; color: #e4fcff; text-shadow: 0 0 6px var(--cyan), 0 0 16px var(--cyan); font-variant-numeric: tabular-nums; }
+.group-code-copy { font: 700 0.85rem/1 var(--body); color: var(--cyan); background: transparent; border: 1.5px solid var(--cyan); border-radius: 999px; padding: 8px 14px; cursor: pointer; }
+.group-code-copy:hover { background: rgba(46, 230, 255, 0.12); }
+.group-code-inline { color: #e4fcff; letter-spacing: 0.08em; text-shadow: 0 0 8px var(--cyan); white-space: nowrap; }

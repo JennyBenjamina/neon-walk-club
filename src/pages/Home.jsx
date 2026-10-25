@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import JoinButton from '../components/JoinButton.jsx'
 import CountUp from '../components/CountUp.jsx'
+import GroupCode from '../components/GroupCode.jsx'
 import Skyline from '../components/Skyline.jsx'
 import SirkleCalendar from '../components/SirkleCalendar.jsx'
 import { useSettings } from '../lib/settings.jsx'
@@ -58,7 +59,7 @@ export default function Home() {
             <li className="card">
               <span className="step-num neon-cyan">2</span>
               <h3>Join the club</h3>
-              <p className="muted">Find Neon Walk Club and join. Membership is free and open to anyone.</p>
+              <p className="muted">Join our group with code <GroupCode inline />. Membership is free and open to anyone.</p>
             </li>
             <li className="card">
               <span className="step-num neon-amber">3</span>
