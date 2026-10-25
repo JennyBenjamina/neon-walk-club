@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import PageHeader from '../components/PageHeader.jsx'
 import SirkleCalendar from '../components/SirkleCalendar.jsx'
 import JoinButton from '../components/JoinButton.jsx'
+import GroupCode from '../components/GroupCode.jsx'
+import JoinHelp from '../components/JoinHelp.jsx'
 import { WALK_TYPES } from '../data/fallback.js'
 import { useSettings } from '../lib/settings.jsx'
 
@@ -52,12 +54,14 @@ export default function Walks() {
             <p className="eyebrow">How to RSVP</p>
             <h2>Save your spot</h2>
             <ol className="check-list">
+              <li>First time? Join our group in the Sirkl app with code <GroupCode inline />.</li>
               <li>Open Neon Walk Club in the Sirkl app.</li>
               <li>Pick a walk on the calendar.</li>
               <li>Tap to RSVP so the leader knows to look for you.</li>
               <li>Can't make it after all? Un-RSVP so the headcount stays accurate.</li>
             </ol>
             <JoinButton />
+            <JoinHelp showCode={false} />
           </div>
         </div>
       </section>

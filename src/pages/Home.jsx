@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import JoinButton from '../components/JoinButton.jsx'
 import CountUp from '../components/CountUp.jsx'
 import GroupCode from '../components/GroupCode.jsx'
+import JoinHelp from '../components/JoinHelp.jsx'
 import Skyline from '../components/Skyline.jsx'
 import SirkleCalendar from '../components/SirkleCalendar.jsx'
 import { useSettings } from '../lib/settings.jsx'
@@ -33,6 +34,7 @@ export default function Home() {
             <JoinButton />
             <Link className="btn btn-ghost" to="/first-walk">Your first walk →</Link>
           </div>
+          <JoinHelp className="hero-join-help" />
         </div>
         <Skyline />
       </section>
@@ -67,6 +69,7 @@ export default function Home() {
               <p className="muted">RSVP to a walk, meet the group at the posted spot, and enjoy the lights.</p>
             </li>
           </ol>
+          <JoinHelp showCode={false} className="steps-help" />
         </div>
       </section>
 
@@ -132,6 +135,7 @@ export default function Home() {
           <h2 className="neon-title neon-pink">Lace up. Light up.</h2>
           <p className="lead">Your first walk is free. So is every one after that.</p>
           <JoinButton />
+          <JoinHelp />
         </div>
       </section>
     </>

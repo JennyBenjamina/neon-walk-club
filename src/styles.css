@@ -347,3 +347,12 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--c
 .group-code-copy { font: 700 0.85rem/1 var(--body); color: var(--cyan); background: transparent; border: 1.5px solid var(--cyan); border-radius: 999px; padding: 8px 14px; cursor: pointer; }
 .group-code-copy:hover { background: rgba(46, 230, 255, 0.12); }
 .group-code-inline { color: #e4fcff; letter-spacing: 0.08em; text-shadow: 0 0 8px var(--cyan); white-space: nowrap; }
+
+/* Join reminder (group code + point of contact) */
+.join-help { margin: 14px 0 0; font-size: 0.92rem; color: var(--muted); max-width: 60ch; }
+.join-help a { color: var(--cyan); font-weight: 700; }
+.join-help strong { color: var(--text); }
+.cta-inner .join-help { margin-inline: auto; }
+.steps-help { margin-top: 20px; }
+.hero { padding-bottom: 240px; }
+.hero-join-help { position: relative; z-index: 2; }

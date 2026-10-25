@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import PageHeader from '../components/PageHeader.jsx'
 import JoinButton from '../components/JoinButton.jsx'
 import GroupCode from '../components/GroupCode.jsx'
+import JoinHelp from '../components/JoinHelp.jsx'
 
 const TIPS = [
   ['Distances are deceiving', "Resorts are enormous. The one that looks next door can be a 20-minute walk. Our route maps show real distances."],
@@ -34,6 +35,7 @@ export default function Visitors() {
               <JoinButton />
               <Link className="btn btn-ghost" to="/routes">See routes</Link>
             </div>
+            <JoinHelp showCode={false} />
           </div>
           <div className="card highlight-card">
             <p className="eyebrow">Why walk with us</p>

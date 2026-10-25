@@ -1,6 +1,7 @@
 import PageHeader from '../components/PageHeader.jsx'
 import JoinButton from '../components/JoinButton.jsx'
 import GroupCode from '../components/GroupCode.jsx'
+import JoinHelp from '../components/JoinHelp.jsx'
 
 const BRING = [
   ['👟', 'Comfortable shoes', 'Broken-in sneakers. The Strip is longer than it looks.'],
@@ -42,6 +43,7 @@ export default function FirstWalk() {
               <li>Turn on notifications so you see last-minute changes.</li>
             </ol>
             <JoinButton />
+            <JoinHelp showCode={false} />
           </div>
           <div className="card">
             <p className="eyebrow">On the day</p>

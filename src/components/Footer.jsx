@@ -14,6 +14,11 @@ export default function Footer() {
             Free group walks on the Las Vegas Strip. Open to everyone, every week.
           </p>
           <p className="muted small">
+            Join on Sirkl with code <strong className="group-code-inline">{settings.sirkl_group_code}</strong>
+            <br />
+            Point of contact: <strong>{settings.point_of_contact}</strong>
+          </p>
+          <p className="muted small">
             <a href={`mailto:${settings.contact_email}`}>{settings.contact_email}</a>
             {settings.instagram_url && (
               <>

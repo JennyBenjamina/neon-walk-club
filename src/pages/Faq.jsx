@@ -2,13 +2,15 @@ import { Link } from 'react-router-dom'
 import PageHeader from '../components/PageHeader.jsx'
 import { MessageForm, NewsletterForm } from '../components/Forms.jsx'
 import { useSettings } from '../lib/settings.jsx'
+import GroupCode from '../components/GroupCode.jsx'
 
 export default function Faq() {
   const { settings } = useSettings()
   const FAQS = [
     ['Is it really free?', 'Yes. Membership and every walk are free, and they always will be.'],
-    ['Who can join?', 'Anyone: locals, visitors, every age and every fitness level. If you can walk the Strip, you belong here.'],
-    ['Do I need the Sirkl app?', 'Sirkl is how we post walks and take RSVPs, so you need it to see the live calendar and save your spot. The newsletter is a lighter way to keep up.'],
+    ['Who can join?', <>Anyone: locals, visitors, every age and every fitness level. Download Sirkl and join our group with code <GroupCode inline />.</>],
+    ['Do I need the Sirkl app?', <>Yes. Sirkl is how we post walks and take RSVPs. In the app, join our group with code <GroupCode inline /> to see the calendar and save your spot. The newsletter is a lighter way to keep up.</>],
+    ['Who do I contact about joining?', <><strong>{settings.point_of_contact}</strong> is the club's point of contact. Send a message using the <a href="#contact">contact form</a> below and it will reach the organizers.</>],
     ['How long are the walks?', <>Most cover between one and four miles depending on the route, at a relaxed, social pace. See the <Link to="/routes">route maps</Link> for distances.</>],
     ['How often do you walk?', `${settings.walks_per_week} times a week, mornings and evenings. Check Sirkl for this week's schedule.`],
     ['Can I bring my kids?', 'Families are welcome. Children should be with a parent or guardian, who is responsible for them during the walk.'],
@@ -41,7 +43,8 @@ export default function Faq() {
             <p className="eyebrow">Contact</p>
             <h2>Say hello</h2>
             <p className="muted">
-              Questions, ideas, press or a group booking? Send us a message here or email{' '}
+              <strong>{settings.point_of_contact}</strong> is our point of contact for joining the club. Questions, ideas,
+              press or a group booking? Send us a message here or email{' '}
               <a href={`mailto:${settings.contact_email}`}>{settings.contact_email}</a>.
             </p>
             <div className="card newsletter-card">

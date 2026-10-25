@@ -1,5 +1,6 @@
 import { useSettings } from '../lib/settings.jsx'
 import JoinButton from './JoinButton.jsx'
+import JoinHelp from './JoinHelp.jsx'
 
 /**
  * Shows the live Sirkl calendar when an embed URL is set (in /admin -> Settings,
@@ -36,6 +37,7 @@ export default function SirkleCalendar({ height = 640 }) {
           in the Sirkl app, where you can RSVP in one tap.
         </p>
         <JoinButton>See upcoming walks on Sirkl</JoinButton>
+        <JoinHelp />
       </div>
     </div>
   )
