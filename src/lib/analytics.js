@@ -34,3 +34,13 @@ export function trackPageView(path) {
     })
   })
 }
+
+// Records a button click or other action as a named event, e.g. trackEvent('join_sirkl_click').
+// Shows up in Google Analytics under Reports -> Engagement -> Events.
+export function trackEvent(name, params = {}) {
+  if (window.location.pathname.startsWith('/admin')) return
+  getAnalyticsOnce().then((ga) => {
+    if (!ga) return
+    ga.logEvent(ga.analytics, name, { page_path: window.location.pathname, ...params })
+  })
+}

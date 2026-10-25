@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSettings } from '../lib/settings.jsx'
+import { trackEvent } from '../lib/analytics.js'
 
 /** The Sirkl group code, shown as a glowing chip with a one-tap copy button. */
 export default function GroupCode({ inline = false }) {
@@ -11,6 +12,7 @@ export default function GroupCode({ inline = false }) {
   if (inline) return <strong className="group-code-inline">{code}</strong>
 
   async function copy() {
+    trackEvent('copy_group_code')
     try {
       await navigator.clipboard.writeText(code)
       setCopied(true)

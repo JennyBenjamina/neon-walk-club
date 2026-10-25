@@ -7,3 +7,8 @@ dist
 *.log
 .firebase
 firebase-debug.log
+
+# AI assistant skill files added by firebase init
+.agents/
+.claude/
+skills-lock.json
