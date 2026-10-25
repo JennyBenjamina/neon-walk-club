@@ -11,12 +11,14 @@ import Community from './pages/Community.jsx'
 import Perks from './pages/Perks.jsx'
 import Faq from './pages/Faq.jsx'
 import NotFound from './pages/NotFound.jsx'
+import { trackPageView } from './lib/analytics.js'
 
 // Organizer tools (and Firebase Auth/Storage) only load when someone opens /admin.
 const Admin = lazy(() => import('./pages/admin/Admin.jsx'))
 
 function ScrollManager() {
   const { pathname, hash } = useLocation()
+  useEffect(() => trackPageView(pathname), [pathname])
   useEffect(() => {
     if (hash) {
       const el = document.getElementById(hash.slice(1))

@@ -51,7 +51,7 @@ export default function Footer() {
       </div>
       <div className="container footer-bottom">
         <span>© {new Date().getFullYear()} Neon Walk Club</span>
-        <span>Walk at your own pace. Hydrate. Have fun.</span>
+        <span>We use Google Analytics to count visits. Walk at your own pace. Hydrate. Have fun.</span>
       </div>
     </footer>
   )
