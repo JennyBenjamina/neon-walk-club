@@ -78,14 +78,26 @@ When Sirkl gives you an embed code, it will look something like `<iframe src="ht
 - **Logo:** `public/logo.svg` (full sign) and `public/favicon.svg` (icon). The header logo is in `src/components/Logo.jsx`.
 
 ## Put it online (Firebase Hosting)
-```bash
-npx firebase-tools login          # once
-npx firebase-tools use --add      # once: pick your neon-walk-club project
-npm run deploy                    # builds the site and deploys hosting + security rules
-```
-Your site will be live at `https://<project-id>.web.app`. To use your own domain, buy `neonwalkclub.com` (Cloudflare, Namecheap or Porkbun), then go to **Hosting → Add custom domain** in the Firebase console and add the DNS records it shows you.
 
-`npm run deploy` also publishes `firestore.rules` and `storage.rules`, so after the first setup you can edit the rules in this repo instead of the console.
+### Automatic: push to `main`
+Every push (or merged pull request) to `main` on GitHub builds the site and deploys it to production through GitHub Actions (`.github/workflows/firebase-hosting-merge.yml`). Pull requests get a temporary preview link instead (`firebase-hosting-pull-request.yml`). Watch progress under the repo's **Actions** tab.
+
+The workflows need two GitHub secrets (**Settings → Secrets and variables → Actions**):
+
+| Secret | What it is |
+|---|---|
+| `FIREBASE_SERVICE_ACCOUNT_NEON_WALK_CLUB` | Lets GitHub deploy to Firebase. Created by `npx firebase-tools init hosting:github`. |
+| `ENV_LOCAL` | The full contents of your `.env.local` file (the `VITE_FIREBASE_…` lines). |
+
+### Manual
+```bash
+npm run build && npx firebase-tools deploy --only hosting          # straight to production
+npm run build && npx firebase-tools hosting:channel:deploy preview # temporary preview link
+```
+To undo a bad release: Firebase console → **Hosting** → release history → **Rollback**.
+
+### Custom domain
+Buy the domain (ours is on Namecheap), then in the Firebase console go to **Hosting → Add custom domain** and add the DNS records it shows you in Namecheap → **Advanced DNS** (use `@` as the host for the root domain and `www` for www). Also add the domain under **Authentication → Settings → Authorized domains**.
 
 ## Where data lives (Firestore)
 | Collection | What |

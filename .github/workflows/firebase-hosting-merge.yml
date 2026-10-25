@@ -1,0 +1,52 @@
+# Deploys the site to production (neonwalkclub.com / neon-walk-club.web.app)
+# every time something is pushed or merged to the main branch.
+name: Deploy to production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # also lets you re-run a deploy by hand from the Actions tab
+
+# Never run two production deploys at the same time.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # The ENV_LOCAL secret holds the same lines as your .env.local file.
+      - name: Write Firebase settings
+        env:
+          ENV_LOCAL: ${{ secrets.ENV_LOCAL }}
+        run: |
+          printf '%s\n' "$ENV_LOCAL" > .env.production.local
+          if ! grep -qE '^VITE_FIREBASE_API_KEY=.+' .env.production.local; then
+            echo "::error::The ENV_LOCAL secret is missing or has no VITE_FIREBASE_API_KEY. Add it under Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to Firebase Hosting (live)
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NEON_WALK_CLUB }}
+          channelId: live
+          projectId: neon-walk-club
