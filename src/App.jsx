@@ -11,6 +11,8 @@ import Community from './pages/Community.jsx'
 import Perks from './pages/Perks.jsx'
 import Faq from './pages/Faq.jsx'
 import NotFound from './pages/NotFound.jsx'
+import Privacy from './pages/Privacy.jsx'
+import Terms from './pages/Terms.jsx'
 import { trackPageView } from './lib/analytics.js'
 
 // Organizer tools (and Firebase Auth/Storage) only load when someone opens /admin.
@@ -48,6 +50,8 @@ export default function App() {
           <Route path="/community" element={<Community />} />
           <Route path="/perks" element={<Perks />} />
           <Route path="/faq" element={<Faq />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
           <Route
             path="/admin"
             element={

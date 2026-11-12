@@ -356,3 +356,12 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--c
 .steps-help { margin-top: 20px; }
 .hero { padding-bottom: 240px; }
 .hero-join-help { position: relative; z-index: 2; }
+
+/* Privacy policy and terms pages */
+.footer-legal { display: flex; gap: 16px; }
+.footer-legal a { color: var(--muted); }
+.footer-legal a:hover { color: var(--text, #fff); }
+.legal > * { max-width: 760px; }
+.legal h2 { font-size: 1.35rem; margin: 36px 0 10px; }
+.legal p, .legal li { line-height: 1.7; }
+.legal ul { padding-left: 1.2em; display: grid; gap: 8px; }
